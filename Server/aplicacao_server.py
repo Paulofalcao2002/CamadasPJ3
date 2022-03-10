@@ -62,7 +62,7 @@ def main():
                 print('-'*50)
                 return
             
-            if rxBuffer_head[3:10] == b'\xFF\xFF\xFF\xFF\xFF\xFF\xFF':
+            if rxBuffer_head[:2] == rxBuffer_head[3:5]:
                 print("Comando final")
                 break
 

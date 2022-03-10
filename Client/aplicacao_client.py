@@ -12,6 +12,8 @@ imgBinary = open(enderecoImg, 'rb').read()
 
 comandos = []
 lenB = len(imgBinary)
+
+tamanho = lenB/114 if lenB % 114 == 0 else int(lenB/114) + 1
 computado = 0
 
 numero = 1
@@ -23,9 +25,10 @@ while computado <= lenB:
     
     size = len(imgBinary[i:j]).to_bytes(1, byteorder ="big")
     n_comando = numero.to_bytes(2, byteorder ="big")
-    zeros = b'\x00\x00\x00\x00\x00\x00\x00'
+    lenComandos = tamanho.to_bytes(2, byteorder = "big")
+    zeros = b'\x00\x00\x00\x00\x00'
     tail = b'\x00\x01\x02\x03'
-    comando = n_comando + size + zeros + imgBinary[i:j] + tail
+    comando = n_comando + size + lenComandos +zeros + imgBinary[i:j] + tail
     
     # print(comando)
     # print(len(comando))
@@ -37,9 +40,9 @@ while computado <= lenB:
     numero += 1
     computado += 114
 
-# print(len(comandos[0]))
+# print(len(comandos[0]), comandos[-1][3:5], comandos[-1][0:2])
 
-serialName = "COM7"
+serialName = "COM4"
 
 def main():
     try:
@@ -158,9 +161,9 @@ def main():
                 print('-'*50)
                 return
 
-        inicio_timer = time.time()
-        txBuffer = b'\x00\x00\x00\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x00\x01\x02\x03'
-        com1.sendData(np.asarray(txBuffer), inicio_timer)
+        # inicio_timer = time.time()
+        # txBuffer = b'\x00\x00\x00\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x00\x01\x02\x03'
+        # com1.sendData(np.asarray(txBuffer), inicio_timer)
 
         print("-"*50)
         print("Sucesso no envio dos dados")
